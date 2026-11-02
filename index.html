@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#eef4fa" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0b1226" media="(prefers-color-scheme: dark)">
-<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0b1226">
+<meta name="color-scheme" content="dark">
 <title>東京行 2026</title>
 <style>
   :root{
-    color-scheme:light dark;
+    color-scheme:dark;
     --ink:#eef4fa; --panel:#ffffff; --panel2:#f4f8fc; --line:#d8e3ee;
     --text:#1d2c3c; --muted:#5d6e80; --muted2:#93a3b4;
     --gold:#e2722b; --gold-deep:#c85f1e;
@@ -134,7 +133,7 @@
 h2.sec::before{content:"✦ ";color:var(--gold)}
 .snow{display:none}
 /* ===== 深色：星空聖誕 ===== */
-@media (prefers-color-scheme: dark){
+@media all{
   :root{
     --ink:#0b1226; --panel:#141d38; --panel2:#1a2546; --line:#283563;
     --text:#eef1fa; --muted:#a3add0; --muted2:#6c78a3;
