@@ -170,13 +170,15 @@ h2.sec::before{content:"✦ ";color:var(--gold)}
   .p-cyan{background:rgba(143,199,255,.10); border-color:rgba(143,199,255,.34)}
 
   .skyline{fill:#c9d6ff;opacity:.22}
-  .hero .top::before{content:"";position:absolute;left:0;right:0;top:0;height:16px;
+  .hero .top::before{content:"";position:absolute;left:0;right:0;top:0;height:18px;
     background:
-      radial-gradient(circle at 10px 10px,#ff6b6b 4px,transparent 5px) 0 0/80px 16px,
-      radial-gradient(circle at 30px 10px,#f2c46d 4px,transparent 5px) 0 0/80px 16px,
-      radial-gradient(circle at 50px 10px,#5fd39a 4px,transparent 5px) 0 0/80px 16px,
-      radial-gradient(circle at 70px 10px,#8fc7ff 4px,transparent 5px) 0 0/80px 16px;
-    filter:drop-shadow(0 0 4px rgba(255,255,255,.35));opacity:.9}
+      radial-gradient(circle at 10px 10px,#ff4d4d 4.5px,rgba(255,77,77,.35) 7px,transparent 9px) 0 0/80px 18px,
+      radial-gradient(circle at 30px 10px,#ffd75e 4.5px,rgba(255,215,94,.35) 7px,transparent 9px) 0 0/80px 18px,
+      radial-gradient(circle at 50px 10px,#4dff9a 4.5px,rgba(77,255,154,.35) 7px,transparent 9px) 0 0/80px 18px,
+      radial-gradient(circle at 70px 10px,#5cc8ff 4.5px,rgba(92,200,255,.35) 7px,transparent 9px) 0 0/80px 18px;
+    filter:brightness(1.25) saturate(1.3) drop-shadow(0 0 6px rgba(255,240,200,.7));
+    animation:twinkle 2.4s ease-in-out infinite alternate}
+  @keyframes twinkle{from{opacity:.75}to{opacity:1}}
   .hero .top{padding-top:28px}
   .snow{display:block;position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
   .snow i{position:absolute;top:-10px;color:#fff;opacity:.55;font-style:normal;animation:fall linear infinite}
