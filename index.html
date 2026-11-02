@@ -27,7 +27,7 @@
   .page{display:none; padding:18px 16px 8px; max-width:520px; margin:0 auto; animation:in .22s ease}
   .page.active{display:block}
   @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  @media (prefers-reduced-motion:reduce){.page{animation:none}}
+  @media (prefers-reduced-motion:reduce){.page{animation:none}.snow i{animation:none;display:none}}
 
   h2.sec{font-size:13px; letter-spacing:.12em; color:var(--muted); font-weight:600; margin:26px 2px 10px}
   .card{background:var(--panel); border:1px solid var(--line); box-shadow:0 1px 3px rgba(29,44,60,.05); border-radius:16px; padding:16px; margin-bottom:12px}
@@ -128,6 +128,11 @@
   nav button.active{color:var(--gold)}
   nav button.active .lb{color:var(--gold)}
 
+
+.skyline{display:block;width:100%;height:56px;margin-top:-8px;fill:var(--cyan);opacity:.16}
+.skyline .snowcap{fill:#fff;opacity:.9}
+h2.sec::before{content:"✦ ";color:var(--gold)}
+.snow{display:none}
 /* ===== 深色：星空聖誕 ===== */
 @media (prefers-color-scheme: dark){
   :root{
@@ -164,6 +169,22 @@
   .p-paid{background:rgba(95,211,154,.12); border-color:rgba(95,211,154,.38)}
   .p-gold{background:rgba(242,196,109,.12); border-color:rgba(242,196,109,.4)}
   .p-cyan{background:rgba(143,199,255,.10); border-color:rgba(143,199,255,.34)}
+
+  .skyline{fill:#c9d6ff;opacity:.22}
+  .hero .top::before{content:"";position:absolute;left:0;right:0;top:0;height:16px;
+    background:
+      radial-gradient(circle at 10px 10px,#ff6b6b 4px,transparent 5px) 0 0/80px 16px,
+      radial-gradient(circle at 30px 10px,#f2c46d 4px,transparent 5px) 0 0/80px 16px,
+      radial-gradient(circle at 50px 10px,#5fd39a 4px,transparent 5px) 0 0/80px 16px,
+      radial-gradient(circle at 70px 10px,#8fc7ff 4px,transparent 5px) 0 0/80px 16px;
+    filter:drop-shadow(0 0 4px rgba(255,255,255,.35));opacity:.9}
+  .hero .top{padding-top:28px}
+  .snow{display:block;position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+  .snow i{position:absolute;top:-10px;color:#fff;opacity:.55;font-style:normal;animation:fall linear infinite}
+  @keyframes fall{to{transform:translateY(105vh) rotate(180deg)}}
+  .page{position:relative;z-index:2}
+  .daynum{background:linear-gradient(160deg,#25335f,#1a2546);box-shadow:0 0 0 1px rgba(242,196,109,.25)}
+  .day .dt{color:#fff}
   nav{background:rgba(11,18,38,.92)}
   .todo.done .box svg path{stroke:#0b1226}
 }
@@ -183,7 +204,14 @@
         <span class="lab">天後出發</span>
       </div>
     </div>
-    <div class="perf"><span class="dash"></span></div>
+    <svg class="skyline" viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true">
+<path d="M0 70 L0 58 L30 58 L30 50 L44 50 L44 60 L70 60 L70 46 L84 46 L84 58 L110 58
+L140 30 L170 12 L200 30 L230 58 L250 58 L250 48 L262 48 L262 58
+L286 58 L290 40 L293 40 L296 6 L298 6 L301 40 L304 40 L308 58
+L330 58 L330 44 L346 44 L346 56 L360 56 L366 30 L368 30 L370 18 L372 30 L374 30 L380 56 L400 56 L400 70 Z"/>
+<path class="snowcap" d="M158 20 L170 12 L182 20 L176 22 L170 18 L164 22 Z"/>
+</svg>
+<div class="perf"><span class="dash"></span></div>
     <div class="stub">
       <div class="leg">
         <div class="code">JX314 · 去程</div>
@@ -236,7 +264,7 @@
   </div>
 
   <div class="card day">
-    <div class="dh"><div class="daynum">6</div><div><div class="dt">抵達東京 · 晴空塔／淺草</div><div class="dd">11/6 (五) · Day 1 <span class="pill p-pend">暫定</span></div></div></div>
+    <div class="dh"><div class="daynum">6</div><div><div class="dt">🗼 抵達東京 · 晴空塔／淺草</div><div class="dd">11/6 (五) · Day 1 <span class="pill p-pend">暫定</span></div></div></div>
     <ul class="tl">
       <li><span class="t">09:15</span>JX314 台中起飛（台灣時間）<span class="pill p-paid">確定</span></li>
       <li><span class="t">13:25</span>抵達成田（日本時間）<span class="pill p-paid">確定</span></li>
@@ -251,7 +279,7 @@
   </div>
 
   <div class="card day">
-    <div class="dh"><div class="daynum">7</div><div><div class="dt">明治神宮・新宿・東京鐵塔</div><div class="dd">11/7 (六) · Day 2</div></div></div>
+    <div class="dh"><div class="daynum">7</div><div><div class="dt">⛩️ 明治神宮・新宿・東京鐵塔</div><div class="dd">11/7 (六) · Day 2</div></div></div>
     <ul class="tl">
       <li><span class="t">上午</span>明治神宮（含御苑）
         <div class="note">大鳥居、森林參道。押上→表參道半藏門線直達，走過去約 15 分。</div></li>
@@ -266,7 +294,7 @@
   </div>
 
   <div class="card day">
-    <div class="dh"><div class="daynum">8</div><div><div class="dt">淺草・上野・澀谷／秋葉原</div><div class="dd">11/8 (日) · Day 3</div></div></div>
+    <div class="dh"><div class="daynum">8</div><div><div class="dt">🏮 淺草・上野・澀谷／秋葉原</div><div class="dd">11/8 (日) · Day 3</div></div></div>
     <ul class="tl">
       <li><span class="t">上午</span>淺草寺・雷門・仲見世通
         <div class="note">押上搭淺草線 1 站。吃人形燒、炸肉餅。早去人少。</div></li>
@@ -279,7 +307,7 @@
   </div>
 
   <div class="card day">
-    <div class="dh"><div class="daynum">9</div><div><div class="dt">鎌倉・江之島</div><div class="dd">11/9 (一) · Day 4 <span class="pill p-pend">暫定</span></div></div></div>
+    <div class="dh"><div class="daynum">9</div><div><div class="dt">🌊 鎌倉・江之島</div><div class="dd">11/9 (一) · Day 4 <span class="pill p-pend">暫定</span></div></div></div>
     <ul class="tl">
       <li><span class="t">順序</span>鎌倉（小町通・鶴岡八幡宮）→ 長谷（大佛・長谷寺）→ 江之電 → 由比濱海灘 → 鎌倉高校前 → 江之島</li>
       <li class="hot"><span class="t">必去</span><b>Tenzan lab.</b>（江之島）
@@ -294,7 +322,7 @@
   </div>
 
   <div class="card day">
-    <div class="dh"><div class="daynum">10</div><div><div class="dt">富士山一日遊</div><div class="dd">11/10 (二) · Day 5 <span class="pill p-pend">待訂團</span></div></div></div>
+    <div class="dh"><div class="daynum">10</div><div><div class="dt">🗻 富士山一日遊</div><div class="dd">11/10 (二) · Day 5 <span class="pill p-pend">待訂團</span></div></div></div>
     <ul class="tl">
       <li><span class="t">形式</span>巴士一日團（KKday／Klook）
         <div class="note">多從<b>新宿</b>集合（約 7:30–8:30），押上→新宿約 35–40 分，要<b>早上 6:45 左右出門</b>。訂團時看集合點，有東京站／上野集合的團離押上更近。</div></li>
@@ -309,7 +337,7 @@
   </div>
 
   <div class="card day">
-    <div class="dh"><div class="daynum">11</div><div><div class="dt">返程</div><div class="dd">11/11 (三) · Day 6</div></div></div>
+    <div class="dh"><div class="daynum">11</div><div><div class="dt">✈️ 返程</div><div class="dd">11/11 (三) · Day 6</div></div></div>
     <ul class="tl">
       <li><span class="t">早起</span>飯店早餐（已含）
         <div class="note">趕飛機日，能早起就從容；早餐已含，吃了再走。</div></li>
@@ -429,6 +457,7 @@
   <div class="note" style="text-align:center; margin-top:4px">點一下打勾 · 勾選只記在這台手機的這個檔案上</div>
 </section>
 
+<div class="snow" aria-hidden="true"></div>
 <nav id="nav">
   <button data-t="home" class="active">
     <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span class="lb">總覽</span>
@@ -470,6 +499,10 @@
     
   }
   cd();
+(function(){var sn=document.querySelector('.snow');if(!sn)return;
+for(var i=0;i<22;i++){var f=document.createElement('i');f.textContent=i%3?'·':'❄';
+f.style.left=(Math.random()*100)+'%';f.style.fontSize=(i%3?14:10+Math.random()*6)+'px';
+f.style.animationDuration=(9+Math.random()*10)+'s';f.style.animationDelay=(-Math.random()*18)+'s';sn.appendChild(f);}})();
 
   var TODOS=[
     {id:'flight', t:'訂機票 JX314 / JX315', s:'已訂 · 訂位代號請查星宇 App'},
