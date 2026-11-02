@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eef4fa">
+<title>東京行 2026</title>
+<style>
+  :root{
+    --ink:#eef4fa; --panel:#ffffff; --panel2:#f4f8fc; --line:#d8e3ee;
+    --text:#1d2c3c; --muted:#5d6e80; --muted2:#93a3b4;
+    --gold:#e2722b; --gold-deep:#c85f1e;
+    --cyan:#2f6db5;
+    --won:#d9572b; --paid:#2e9562; --pend:#c4790f;
+    --cjk:"PingFang TC","Noto Sans TC","Microsoft JhengHei","Heiti TC",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ink); color:var(--text); font-family:var(--cjk);
+    line-height:1.6; padding-bottom:calc(76px + env(safe-area-inset-bottom));
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  .page{display:none; padding:18px 16px 8px; max-width:520px; margin:0 auto; animation:in .22s ease}
+  .page.active{display:block}
+  @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.page{animation:none}}
+
+  h2.sec{font-size:13px; letter-spacing:.12em; color:var(--muted); font-weight:600; margin:26px 2px 10px}
+  .card{background:var(--panel); border:1px solid var(--line); box-shadow:0 1px 3px rgba(29,44,60,.05); border-radius:16px; padding:16px; margin-bottom:12px}
+  .card.raise{background:var(--panel2)}
+  .muted{color:var(--muted)} .small{font-size:13px} .tiny{font-size:11.5px}
+  .row{display:flex; align-items:center; gap:10px}
+  .between{display:flex; justify-content:space-between; align-items:center; gap:10px}
+  b,strong{color:var(--text)}
+
+  .hero{position:relative; border-radius:20px; overflow:hidden; margin-bottom:6px;
+    background:linear-gradient(165deg,#d7e8f7 0%,#f3f8fd 55%,#fff4ea 100%);
+    border:1px solid var(--line)}
+  .hero::before{content:""; position:absolute; top:-40%; left:50%; transform:translateX(-50%);
+    width:320px; height:320px; background:radial-gradient(closest-side, rgba(242,150,80,.30), rgba(242,150,80,0) 70%);
+    pointer-events:none}
+  .hero .top{position:relative; padding:20px 20px 14px}
+  .hero .tag{font-size:11px; letter-spacing:.24em; color:var(--gold); font-weight:700}
+  .hero h1{margin:6px 0 2px; font-size:30px; font-weight:800; letter-spacing:.01em}
+  .hero .sub{color:var(--muted); font-size:13px}
+  .count{display:flex; align-items:baseline; gap:10px; margin:16px 0 4px}
+  .count .num{font-size:58px; font-weight:800; line-height:.9; color:var(--gold);
+     font-variant-numeric:tabular-nums}
+  .count .lab{font-size:14px; color:var(--text)}
+  .count2{font-size:12.5px; color:var(--muted)}
+  .perf{position:relative; height:24px}
+  .perf::before,.perf::after{content:""; position:absolute; top:50%; width:22px; height:22px; border-radius:50%;
+    background:var(--ink); transform:translateY(-50%)}
+  .perf::before{left:-11px} .perf::after{right:-11px}
+  .perf .dash{position:absolute; top:50%; left:14px; right:14px; border-top:2px dashed var(--line)}
+  .hero .stub{position:relative; padding:14px 20px 18px; display:flex; gap:18px}
+  .stub .leg{flex:1}
+  .stub .code{font-size:12px; letter-spacing:.16em; color:var(--gold); font-weight:700}
+  .stub .ap{font-size:26px; font-weight:800; letter-spacing:.03em}
+  .stub .tm{font-size:12.5px; color:var(--muted)}
+  .arrow{align-self:center; color:var(--muted2)}
+
+  .pill{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700;
+    padding:3px 9px; border-radius:999px; letter-spacing:.02em}
+  .p-won{background:rgba(255,120,71,.16); color:var(--won); border:1px solid rgba(255,120,71,.4)}
+  .p-paid{background:rgba(78,203,139,.14); color:var(--paid); border:1px solid rgba(78,203,139,.38)}
+  .p-pend{background:rgba(255,180,77,.14); color:var(--pend); border:1px solid rgba(255,180,77,.4)}
+  .p-cyan{background:rgba(47,109,181,.08); color:var(--cyan); border:1px solid rgba(47,109,181,.3)}
+  .p-gold{background:rgba(226,114,43,.10); color:var(--gold); border:1px solid rgba(226,114,43,.35)}
+  .p-grey{background:rgba(154,167,199,.12); color:var(--muted); border:1px solid var(--line)}
+
+  .kv{display:flex; gap:12px; padding:8px 0; border-bottom:1px solid var(--line)}
+  .kv:last-child{border-bottom:0}
+  .kv .k{width:64px; flex:none; color:var(--muted); font-size:13px}
+  .kv .v{flex:1; font-size:14.5px}
+
+  .day{margin-bottom:14px}
+  .day .dh{display:flex; align-items:center; gap:10px; margin-bottom:4px}
+  .daynum{width:34px;height:34px;flex:none;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:15px;background:var(--panel2);border:1px solid var(--line);color:var(--gold)}
+  .day .dt{font-weight:800; font-size:16px} .day .dd{font-size:12.5px; color:var(--muted)}
+  .tl{margin:8px 0 0 16px; border-left:2px solid var(--line); padding:2px 0}
+  .tl li{list-style:none; position:relative; padding:6px 0 6px 20px; font-size:14px}
+  .tl li::before{content:""; position:absolute; left:-7px; top:12px; width:11px;height:11px;border-radius:50%;
+    background:var(--panel); border:2px solid var(--muted2)}
+  .tl li.hot::before{border-color:var(--gold); background:var(--gold); box-shadow:0 0 0 3px rgba(226,114,43,.18)}
+  .tl li.go::before{border-color:var(--cyan)}
+  .tl .t{color:var(--gold); font-weight:700; font-variant-numeric:tabular-nums; margin-right:8px}
+  .tl li.go .t{color:var(--cyan)}
+  .note{font-size:12.5px; color:var(--muted); margin-top:3px}
+
+  .todo{display:flex; gap:12px; padding:13px 4px; border-bottom:1px solid var(--line); cursor:pointer; align-items:flex-start}
+  .todo:last-child{border-bottom:0}
+  .box{width:22px;height:22px;flex:none;border-radius:7px;border:2px solid var(--muted2);margin-top:1px;
+    display:flex;align-items:center;justify-content:center;transition:.15s}
+  .todo.done .box{background:var(--paid);border-color:var(--paid)}
+  .todo.done .box svg{opacity:1}
+  .box svg{opacity:0;width:13px;height:13px}
+  .todo.done .ttl{color:var(--muted); text-decoration:line-through}
+  .ttl{font-size:14.5px; font-weight:600}
+  .tsub{font-size:12.5px; color:var(--muted); margin-top:1px}
+
+  details.tt{margin-top:10px; border-top:1px solid var(--line); padding-top:8px}
+  details.tt summary{cursor:pointer; font-size:13px; font-weight:700; color:var(--cyan); list-style:none; display:flex; align-items:center; gap:6px}
+  details.tt summary::-webkit-details-marker{display:none}
+  details.tt summary::before{content:"▸"; transition:.15s; color:var(--cyan)}
+  details.tt[open] summary::before{transform:rotate(90deg)}
+  details.tt .ttbody{margin-top:8px; font-size:13px}
+  .ttrow{display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums}
+  .ttrow:last-child{border-bottom:0}
+  .ttrow .dep{color:var(--gold); font-weight:700}
+  .ttlink{display:inline-block; margin-top:8px; font-size:12.5px; color:var(--cyan); text-decoration:underline}
+  .banner{background:#fff3e8; border:1px solid #f3c9a6; border-radius:14px;
+    padding:12px 14px; font-size:13px; margin-bottom:14px; color:var(--text)}
+  .banner b{color:var(--gold)}
+
+  nav{position:fixed; bottom:0; left:0; right:0; z-index:20;
+    background:rgba(255,255,255,.94); backdrop-filter:blur(14px); border-top:1px solid var(--line);
+    padding:8px 6px calc(8px + env(safe-area-inset-bottom)); display:flex}
+  nav button{flex:1; background:none; border:0; color:var(--muted2); font-family:inherit;
+    display:flex; flex-direction:column; align-items:center; gap:3px; padding:4px 0; cursor:pointer}
+  nav button .lb{font-size:10.5px; font-weight:600}
+  nav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  nav button.active{color:var(--gold)}
+  nav button.active .lb{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- ============ 總覽 ============ -->
+<section class="page active" id="pg-home">
+  <div class="hero">
+    <div class="top">
+      <div class="tag">TOKYO · 2026</div>
+      <h1>東京行 2026</h1>
+      <div class="sub">4人 · 2026 / 11 / 6 – 11 / 11 · 6天5夜</div>
+      <div class="count">
+        <span class="num" id="cd-days">–</span>
+        <span class="lab">天後出發</span>
+      </div>
+    </div>
+    <div class="perf"><span class="dash"></span></div>
+    <div class="stub">
+      <div class="leg">
+        <div class="code">JX314 · 去程</div>
+        <div class="ap">RMQ</div>
+        <div class="tm">11/6 09:15 出發（台灣時間）</div>
+      </div>
+      <svg class="arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+      <div class="leg" style="text-align:right">
+        <div class="code">NRT · 成田</div>
+        <div class="ap">TYO</div>
+        <div class="tm">13:25 抵達（日本時間）</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="sec">機票</h2>
+  <div class="card">
+    <div class="between" style="margin-bottom:8px">
+      <span class="small muted">星宇航空 · 經濟艙</span>
+      <span class="pill p-paid">機位確認</span>
+    </div>
+    <div class="kv"><div class="k">去程</div><div class="v">JX314 · 11/6(五) · RMQ 09:15 → NRT 13:25</div></div>
+    <div class="kv"><div class="k">回程</div><div class="v">JX315 · 11/11(三) · NRT 14:25 → RMQ 17:55</div></div>
+    <div class="kv"><div class="k">航廈</div><div class="v">台中 T2 / 成田 T2 <span class="muted small">· 出發前再核對一次</span></div></div>
+    <div class="kv"><div class="k">訂位代號</div><div class="v"><span class="muted small">請用星宇 App 查詢</span></div></div>
+  </div>
+
+  <h2 class="sec">住宿</h2>
+  <div class="card">
+    <div class="between" style="margin-bottom:8px">
+      <b>Richmond Hotel Premier Tokyo Schole</b>
+      <span class="pill p-paid">已訂·已付</span>
+    </div>
+    <div class="small muted" style="margin-bottom:10px">押上 · 4人 · Superior Twin Room B（38㎡）· 11/6 入住～11/11 退房（5晚）· 含早餐 · <b>不可退款</b>。</div>
+    <div class="kv"><div class="k">位置</div><div class="v">押上站 B3 出口旁、地下有電梯直通 · 正對晴空塔／晴空街道 · 樓下 LIFE 超市開到深夜</div></div>
+    <div class="kv"><div class="k">房型</div><div class="v">2 張單人床＋加床（第 3、4 人）<span class="muted small">· 加床費應已含在房價，check-in 時再確認</span></div></div>
+    <div class="kv"><div class="k">入住</div><div class="v">14:00 後 · 退房 11:00 前 <span class="muted small">· 要事先告知抵達時間（Booking 訂單頁傳訊息）</span></div></div>
+    <div class="kv"><div class="k">現場付</div><div class="v">東京住宿稅（每人每晚，付現）</div></div>
+    <div class="kv"><div class="k">表參道</div><div class="v">半藏門線直達約25分，不用轉車</div></div>
+    <div class="kv"><div class="k">舊訂房</div><div class="v">東武黎凡特（錦糸町）、池袋 Keio Presso 都已取消 ✅</div></div>
+    <div class="note" style="margin-top:8px">⚠️ 房間看不到晴空塔（飯店說明）。⚠️ 反詐騙：Booking 不會用電話/Email/WhatsApp 要付款資訊。</div>
+  </div>
+</section>
+
+<!-- ============ 每日 ============ -->
+<section class="page" id="pg-days">
+  <div class="banner">
+    標示說明：<b>確定</b>＝已訂或已購票　<b>暫定</b>＝方向定了但可調整　<b>待排</b>＝尚未安排。<br>
+    下列時間多為粗估，<b>不是查過的班次表</b>；出發前用轉乘 App 再確認實際班次。住宿：押上 · Richmond Premier Schole（4人）。
+  </div>
+
+  <div class="card day">
+    <div class="dh"><div class="daynum">6</div><div><div class="dt">抵達東京 · 晴空塔／淺草</div><div class="dd">11/6 (五) · Day 1 <span class="pill p-pend">暫定</span></div></div></div>
+    <ul class="tl">
+      <li><span class="t">09:15</span>JX314 台中起飛（台灣時間）<span class="pill p-paid">確定</span></li>
+      <li><span class="t">13:25</span>抵達成田（日本時間）<span class="pill p-paid">確定</span></li>
+      <li><span class="t">~14:30</span>入境、提領行李 <span class="muted small">（估）</span></li>
+      <li class="go"><span class="t">~14:45</span>成田出關 → <b>京成 Access 特急直達押上</b> → 飯店入住
+        <div class="note">成田 T2 搭 Access 特急（往押上・都營淺草線方向），<b>一車到押上不用轉</b>，約70分、約¥1,300/人。B3 出口旁就是飯店，地下有電梯。推算：約14:30出關→約15:00上車→約16:15到飯店。4人一起買，現場刷 IC 卡或買票。</div></li>
+      <li class="hot"><span class="t">傍晚</span>東京晴空塔 展望台看夜景
+        <div class="note">飯店對面。夜景時段人多，建議先上官網買時段票。</div></li>
+      <li><span class="t">晚上</span>塔下晴空街道 Solamachi 逛街、晚餐
+        <div class="note">累了隨時走回飯店。</div></li>
+    </ul>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><div class="daynum">7</div><div><div class="dt">明治神宮・新宿・東京鐵塔</div><div class="dd">11/7 (六) · Day 2</div></div></div>
+    <ul class="tl">
+      <li><span class="t">上午</span>明治神宮（含御苑）
+        <div class="note">大鳥居、森林參道。押上→表參道半藏門線直達，走過去約 15 分。</div></li>
+      <li><span class="t">中午</span>新宿商圈
+        <div class="note">Alpen Tokyo 運動巨塔、歌舞伎町哥吉拉、3D 巨型貓咪看板。</div></li>
+      <li class="go"><span class="t">~15:30</span>分頭行動：一人先離開，其他人繼續</li>
+      <li><span class="t">傍晚</span>東京都廳 免費展望台（新宿）看夕陽</li>
+      <li class="hot"><span class="t">晚上</span>芝公園 ＆ 東京鐵塔夜景
+        <div class="note">芝公園是拍鐵塔的經典角度。都廳前搭大江戶線到赤羽橋約 15 分。</div></li>
+      <li><span class="t">回程</span>大門搭都營淺草線直達押上</li>
+    </ul>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><div class="daynum">8</div><div><div class="dt">淺草・上野・澀谷／秋葉原</div><div class="dd">11/8 (日) · Day 3</div></div></div>
+    <ul class="tl">
+      <li><span class="t">上午</span>淺草寺・雷門・仲見世通
+        <div class="note">押上搭淺草線 1 站。吃人形燒、炸肉餅。早去人少。</div></li>
+      <li><span class="t">中午</span>上野：湯島天滿宮、阿美橫町、咖啡王城（昭和喫茶）
+        <div class="note">淺草→上野 銀座線約 5 分。阿美橫藥妝、零食便宜。</div></li>
+      <li class="go"><span class="t">~14:15</span>分頭行動：一人先離開，其他人繼續</li>
+      <li><span class="t">下午</span>澀谷 或 秋葉原（二選一）
+        <div class="note">澀谷：十字路口、潮流購物；秋葉原：動漫、電器。上野→秋葉原 JR 1 站，比較近。</div></li>
+    </ul>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><div class="daynum">9</div><div><div class="dt">鎌倉・江之島</div><div class="dd">11/9 (一) · Day 4 <span class="pill p-pend">暫定</span></div></div></div>
+    <ul class="tl">
+      <li><span class="t">順序</span>鎌倉（小町通・鶴岡八幡宮）→ 長谷（大佛・長谷寺）→ 江之電 → 由比濱海灘 → 鎌倉高校前 → 江之島</li>
+      <li class="hot"><span class="t">必去</span><b>Tenzan lab.</b>（江之島）
+        <div class="note">《愛情怎麼翻譯？》劇中初遇拉麵店的取景地，實際是甜品店（刨冰、日式甜點）。要安排進店時間，不只拍外觀。<b>營業日需查官方 IG（曾有資料稱週二、三公休，未證實）。</b></div></li>
+      <li><span class="t">江之島</span>江島神社、弁財天仲見世通（江之島郵局為非必去）</li>
+      <li class="go"><span class="t">傍晚</span>海蠟燭展望燈塔看海與夕陽
+        <div class="note">官方營業 9:00–20:00、最後入場 19:30，出發前再查臨時公告。夕陽與富士山看不看得到要看天氣。</div></li>
+      <li><span class="t">交通</span>從押上出發
+        <div class="note">押上→錦糸町（半藏門線1站）→ JR 總武快速直通橫須賀線到鎌倉，約1.5小時。小田急 Free Pass 要到新宿上車，對住押上不一定划算，出發前比較票價。4人同行，步行量大，節奏放鬆些。</div></li>
+      <li><span class="t">彈性</span>富士山若天氣差可與鎌倉互換（要看富士山團能否改期）</li>
+    </ul>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><div class="daynum">10</div><div><div class="dt">富士山一日遊</div><div class="dd">11/10 (二) · Day 5 <span class="pill p-pend">待訂團</span></div></div></div>
+    <ul class="tl">
+      <li><span class="t">形式</span>巴士一日團（KKday／Klook）
+        <div class="note">多從<b>新宿</b>集合（約 7:30–8:30），押上→新宿約 35–40 分，要<b>早上 6:45 左右出門</b>。訂團時看集合點，有東京站／上野集合的團離押上更近。</div></li>
+      <li class="hot"><span class="t">白天</span>河口湖車站（電車＋富士山同框）、大石公園、新倉山淺間公園（五重塔）
+        <div class="note">11 月上旬是河口湖紅葉季，天氣好富士山很清楚。山上冷，帶外套。</div></li>
+      <li class="go"><span class="t">晚上</span>約 19:00–20:00 回新宿 → 押上
+        <div class="note">回來可在樓下 LIFE 超市或晴空街道吃晚餐。</div></li>
+      <li><span class="t">自由行</span>不跟團也可以：新宿搭特急「富士回遊號」直達河口湖，約 2 小時，<b>要提早劃位</b>
+        <div class="note">跟團省力；自己去時間彈性。兩種擇一。</div></li>
+      <li><span class="t">注意</span>天候不佳可能看不到富士山，訂可取消／改期的較保險</li>
+    </ul>
+  </div>
+
+  <div class="card day">
+    <div class="dh"><div class="daynum">11</div><div><div class="dt">返程</div><div class="dd">11/11 (三) · Day 6</div></div></div>
+    <ul class="tl">
+      <li><span class="t">早起</span>飯店早餐（已含）
+        <div class="note">趕飛機日，能早起就從容；早餐已含，吃了再走。</div></li>
+      <li class="hot"><span class="t">8:00–9:00</span>晴空街道／LIFE 超市最後補買 · 伴手禮
+        <div class="note">大商場多 10:00 後才開，這時段以車站周邊、藥妝、超市為主，補最後伴手禮。主力採買已放 Day5，這裡只是加碼、不遠離飯店。</div></li>
+      <li><span class="t">退房</span>依飯店規定（多為 10:00–11:00，check-in 時確認）</li>
+      <li class="go"><span class="t">回程</span><b>京成 Access 特急 押上→成田（推薦）</b>
+        <div class="note">押上直達成田 T2、不用轉車，約70分。抓 12:00 前到成田（14:25 起飛），建議搭 <b>09:46</b> 那班（約10:45到T2），備案 <b>10:27</b>。退房前先吃早餐。</div></li>
+      <li><span class="t">~10:45</span>到成田 T2 → <b>先退稅</b> → 報到託運 → 安檢
+        <div class="note">新制退稅要海關驗貨＋KIOSK 掃護照，排隊需時，建議起飛前 3–4 小時到。免稅品先別放進託運箱。4 人各自辦。</div></li>
+      <li><span class="t">14:25</span>JX315 起飛 <span class="pill p-paid">確定</span></li>
+      <li><span class="t">17:55</span>抵達台中 RMQ（台灣時間）</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 逛街 ============ -->
+<section class="page" id="pg-shop">
+  <div class="banner">
+    購物地點多為<b>候選</b>，營業時間與庫存尚未查證。
+  </div>
+
+  <h2 class="sec">已排進行程</h2>
+  <div class="card">
+    <div class="between" style="margin-bottom:6px"><b>晴空街道 Solamachi</b><span class="pill p-pend">11/6 傍晚</span></div>
+    <div class="small muted">飯店對面。雜貨、角色商品、伴手禮。</div>
+  </div>
+  <div class="card">
+    <div class="between" style="margin-bottom:6px"><b>淺草商店街</b><span class="pill p-pend">11/6 晚・可選</span></div>
+    <div class="small muted">雜貨、角色商品、伴手禮；淺草有仲見世通、新仲見世。</div>
+  </div>
+
+  <h2 class="sec">寄倉 · 免稅</h2>
+  <div class="card">
+    <div class="small muted" style="line-height:1.9">
+      <div><b>寄倉</b>：視購物量決定，<b>不是必做</b>。寄運與免稅是否相容尚未查證。</div>
+      <div style="margin-top:6px"><b>免稅新制（2026/11/1 起）</b>：店內不再直接免稅，<b>先付含稅全額，離境時在機場退稅</b>。</div>
+      <div>・出發前每人各自上 <b>J-Tax Refund</b> 註冊護照與退款方式（建議信用卡）</div>
+      <div>・在有「Tax-Free」標示的店買，<b>收據全部留好</b>，4 人各自分開</div>
+      <div>・消耗品／一般品不再分開、不用封袋；同店同日可合算</div>
+      <div>・機場：海關驗貨 → KIOSK 掃護照 → 退回登記的卡／帳戶</div>
+      <div>・<b>免稅品別先放託運</b>，隨身或先驗完再託運</div>
+      <div class="note">最低消費門檻（舊制 ¥5,000）新制是否保留未確認，買前問店員。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 交通 ============ -->
+<section class="page" id="pg-trans">
+  <div class="banner">
+    <b>怕入境delay？</b>所有方式都<b>現場買、不預約固定班次</b>。落地(13:25)＋入境提行李約 45–60 分，抓 <b>約 14:15–14:30 出關</b>。時刻表為「目前公布」的班次，<b>11月的實際班次接近日期會變，出發前務必點官方連結再確認</b>。
+  </div>
+
+  <div class="card" style="border-color:var(--pend)">
+    <div class="between"><b>🔔 待更新</b><span class="pill p-pend">出發前</span></div>
+    <div class="note" style="margin-top:6px">下列班次為 2026/09 查詢的現行時刻，僅供參考。<b>接近出發日（約 10 月底～11 月初）再回來請 Claude 重查一次 11/6 與 11/11 的實際班次</b>並更新此頁。</div>
+  </div>
+
+  <h2 class="sec">去程 · 成田 → 押上（飯店）</h2>
+
+  <div class="card">
+    <div class="between" style="margin-bottom:6px"><b>① 京成 Access 特急 直達押上</b><span class="pill p-paid">最推薦</span></div>
+    <div class="kv"><div class="k">轉車</div><div class="v"><b>0 轉</b>，到押上出站就是飯店</div></div>
+    <div class="kv"><div class="k">時間</div><div class="v">約 70 分</div></div>
+    <div class="kv"><div class="k">票價</div><div class="v">約 ¥1,300 / 人</div></div>
+    <div class="kv"><div class="k">班次</div><div class="v">日間約 20–40 分 1 班 · 不用對號，隨到隨搭</div></div>
+    <details class="tt"><summary>搭乘提示</summary>
+      <div class="ttbody">
+        <div class="note">成田 T2 地下京成月台，認「アクセス特急・押上／都営浅草線方面」。部分班次只到京成高砂，要看清終點。B3 出口有電梯直通飯店。</div>
+        <a class="ttlink" href="https://www.keisei.co.jp/keisei/tetudou/skyliner/jp/timetable/index.php" target="_blank" rel="noopener">▶ 京成官方時刻表 出發前查</a>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <div class="between" style="margin-bottom:6px"><b>② 天空樹接駁巴士（京成）</b><span class="pill p-cyan">巴士·行李省力</span></div>
+    <div class="kv"><div class="k">下車</div><div class="v">東京晴空塔城（飯店對面）</div></div>
+    <div class="kv"><div class="k">時間</div><div class="v">約 70–90 分（看路況）</div></div>
+    <div class="kv"><div class="k">票價</div><div class="v">大人 ¥2,000</div></div>
+    <div class="kv"><div class="k">班次</div><div class="v">一天約 5 班 · 下午約 16:10 那班較可能搭到</div></div>
+    <a class="ttlink" href="https://www.keiseibus.co.jp/express-bus/90131-2/" target="_blank" rel="noopener">▶ 京成官方時刻表 出發前再確認</a>
+  </div>
+
+  <div class="card">
+    <div class="between" style="margin-bottom:6px"><b>③ JR 總武快速 → 錦糸町 → 押上</b><span class="pill p-grey">備案·轉1次</span></div>
+    <div class="note">JR 直達錦糸町（約¥1,340、約1小時1班），再轉半藏門線1站到押上。京成停駛或擠爆時用。</div>
+  </div>
+
+  <div class="card raise">
+    <b>實際判斷（13:25落地）</b>
+    <div class="small" style="margin-top:8px;line-height:1.9">
+      約 14:15–14:30 出關 → 直接搭 <b>京成 Access 特急</b> 到押上，最簡單。<br>
+      想少拖行李走樓梯 → 巴士到晴空塔城。
+    </div>
+  </div>
+
+  <h2 class="sec">回程 · 押上 → 成田（11/11・14:25 起飛）</h2>
+  <div class="card">
+    <div class="kv"><div class="k">目標</div><div class="v"><b>12:00 前到成田</b>（起飛前2.5小時）</div></div>
+    <div class="kv"><div class="k">推薦</div><div class="v"><b>京成 Access 特急</b> 押上直達成田 T2 · 約70分 · 約¥1,300</div></div>
+    <div class="kv"><div class="k">出發</div><div class="v">建議 <b>09:46</b>（約10:45到T2）· 備案 <b>10:27</b>（約11:15到）<span class="muted small">· 平日班次，出發前再確認</span></div></div>
+    <a class="ttlink" href="https://www.keisei.co.jp/keisei/tetudou/skyliner/jp/timetable/index.php" target="_blank" rel="noopener">▶ 京成官方時刻表 出發前查</a>
+  </div>
+
+  <h2 class="sec">市區常用</h2>
+  <div class="card">
+    <div class="kv"><div class="k">會場</div><div class="v">半藏門線 押上→表參道 直達約25分</div></div>
+    <div class="kv"><div class="k">淺草</div><div class="v">都營淺草線 押上→淺草 1站</div></div>
+    <div class="kv"><div class="k">上野</div><div class="v">淺草轉銀座線，或步行晴空塔→淺草約20分</div></div>
+  </div>
+</section>
+
+<!-- ============ 待辦 ============ -->
+<section class="page" id="pg-todo">
+  <h2 class="sec">待辦 · 決策</h2>
+  <div class="card" id="todo-list"></div>
+  <div class="note" style="text-align:center; margin-top:4px">點一下打勾 · 勾選只記在這台手機的這個檔案上</div>
+</section>
+
+<nav id="nav">
+  <button data-t="home" class="active">
+    <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span class="lb">總覽</span>
+  </button>
+  <button data-t="days">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg><span class="lb">每日</span>
+  </button>
+  <button data-t="shop">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.4"/></svg><span class="lb">逛街</span>
+  </button>
+  <button data-t="trans">
+    <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M9 17l-2 3M15 17l2 3"/><circle cx="8.5" cy="14" r=".6"/><circle cx="15.5" cy="14" r=".6"/></svg><span class="lb">交通</span>
+  </button>
+  <button data-t="todo">
+    <svg viewBox="0 0 24 24"><path d="M9 11l2 2 4-5"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg><span class="lb">待辦</span>
+  </button>
+</nav>
+
+<script>
+  var pages={home:'pg-home',days:'pg-days',shop:'pg-shop',trans:'pg-trans',todo:'pg-todo'};
+  document.querySelectorAll('#nav button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#nav button').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');
+      Object.values(pages).forEach(function(id){document.getElementById(id).classList.remove('active')});
+      document.getElementById(pages[b.dataset.t]).classList.add('active');
+      window.scrollTo(0,0);
+    });
+  });
+
+  // 倒數：台中起飛用台灣時區 +08:00；演唱會用日本時區 +09:00
+  function cd(){
+    var dep=new Date('2026-11-06T09:15:00+08:00');
+    var show=new Date('2026-11-07T18:00:00+09:00');
+    var now=new Date();
+    var d1=Math.ceil((dep-now)/86400000);
+    var d2=Math.ceil((show-now)/86400000);
+    document.getElementById('cd-days').textContent = d1>0? d1 : (d1===0?'0':'—');
+    
+  }
+  cd();
+
+  var TODOS=[
+    {id:'flight', t:'訂機票 JX314 / JX315', s:'已訂 · 訂位代號請查星宇 App'},
+    {id:'hotel2', t:'訂住宿（已訂 Richmond Premier Schole·押上）', s:'✅ 4人 含早 已付'},
+    {id:'eta',    t:'告知飯店抵達時間', s:'Booking 訂單頁傳訊息 · 順便確認加床不另收費'},
+    
+    
+    
+    {id:'fuji',   t:'訂 11/10 富士山一日團（4人）', s:'KKday/Klook · 選可取消、集合點離押上近的'},
+    {id:'tenzan', t:'確認 Tenzan lab. 11 月營業日', s:'官方 IG @tenzanlab · 影響 11/9 或 11/10 互換'},
+    {id:'kama',   t:'細排鎌倉／江之島交通與票券', s:'押上→錦糸町轉JR直達鎌倉 vs 小田急 Free Pass 比較'},
+    {id:'sky',    t:'買晴空塔展望台票', s:'11/6 傍晚夜景時段 · 官網預購'},
+    {id:'airport',t:'機場往返交通（看「交通」分頁）', s:'現場買不綁班次 · 現行班次已列 · 出發前請Claude重查更新'},
+    {id:'ttupd',  t:'🔔 出發前請Claude更新交通班次', s:'約10月底~11月初 · 重查11/6去程 & 11/11回程實際時刻'},
+    {id:'sim',    t:'辦日本 SIM 卡', s:''},
+    {id:'suica',  t:'手機綁定 Suica／Pasmo（4人）', s:'iPhone 錢包或 Android 都可'},
+    {id:'phone',  t:'更新 NSWER JAPAN 電話號碼', s:'從貨運倉那組換成自己的'},
+    {id:'tax',    t:'每人註冊 J-Tax Refund（免稅新制）', s:'出發前完成 · 登記護照＋退款信用卡 · 收據各自保管'}
+  ];
+  var store={};
+  try{ store=JSON.parse(localStorage.getItem('nmixx_todo')||'{}'); }catch(e){ store={}; }
+  if(store.flight===undefined){ store.flight=true; }
+  function save(){ try{ localStorage.setItem('nmixx_todo',JSON.stringify(store)); }catch(e){} }
+  var wrap=document.getElementById('todo-list');
+  TODOS.forEach(function(item){
+    var el=document.createElement('div');
+    el.className='todo'+(store[item.id]?' done':'');
+    el.innerHTML='<div class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></div>'+
+      '<div><div class="ttl">'+item.t+'</div>'+(item.s?'<div class="tsub">'+item.s+'</div>':'')+'</div>';
+    el.addEventListener('click',function(){
+      var on=el.classList.toggle('done');
+      store[item.id]=on; save();
+    });
+    wrap.appendChild(el);
+  });
+</script>
+</body>
+</html>
