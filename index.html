@@ -548,8 +548,8 @@ L330 58 L330 44 L346 44 L346 56 L360 56 L366 30 L368 30 L370 18 L372 30 L374 30 
     var dep=new Date('2026-11-06T09:15:00+08:00');
     var show=new Date('2026-11-07T18:00:00+09:00');
     var now=new Date();
-    var d1=Math.ceil((dep-now)/86400000);
-    var d2=Math.ceil((show-now)/86400000);
+    var _t=Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()); var d1=Math.round((Date.UTC(2026,10,6)-_t)/86400000);
+    var d2=Math.round((Date.UTC(2026,10,7)-_t)/86400000);
     document.getElementById('cd-days').textContent = d1>0? d1 : (d1===0?'0':'—');
     
   }
